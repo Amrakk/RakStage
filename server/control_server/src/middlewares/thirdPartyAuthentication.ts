@@ -95,7 +95,7 @@ export const discordCallback = async (
             },
             body: `${params}`,
         }).then(async (discordRes) => {
-            if (discordRes.ok) {
+            if (!discordRes.ok) {
                 res.redirect(failureRedirect(SOCIAL_MEDIA_PROVIDER.DISCORD));
                 const contentType = discordRes.headers.get("Content-Type");
                 const body = await (contentType?.includes("application/json") ? discordRes.json() : discordRes.text());

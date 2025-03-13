@@ -3,15 +3,12 @@ import express from "express";
 import passport from "passport";
 import router from "./routes/api.js";
 import session from "express-session";
-import { db } from "./database/db.js";
-import Redis from "./database/redis.js";
+import { init, close } from "./core.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { requestLogger } from "./middlewares/logger/loggers.js";
-import { ENV, BASE_PATH, CLIENT_URL, PORT, SESSION_SECRET } from "./constants.js";
+import { IS_PROD, BASE_PATH, CLIENT_URL, PORT, SESSION_SECRET } from "./constants.js";
 
 const app = express();
-
-const isProd = ENV === "production";
 
 app.use(
     cors({
@@ -26,9 +23,9 @@ app.use(
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: isProd,
+            secure: IS_PROD,
             httpOnly: true,
-            sameSite: isProd ? "none" : "lax",
+            sameSite: IS_PROD ? "none" : "lax",
         },
     })
 );
@@ -43,26 +40,20 @@ app.use(requestLogger);
 app.use(BASE_PATH, router);
 app.use(errorHandler);
 
-await db.init();
-await Redis.init();
+await init();
 
 app.on("close", async () => {
-    await db.close();
-    await Redis.close();
-
-    console.log("Server closed");
-
-    process.exit(0);
+    await close();
 });
 
 app.listen(PORT, async () => {
     console.log(`\nServer is running on port ${PORT}`);
 });
 
-process.on("SIGINT", () => {
+process.once("SIGINT", () => {
     app.emit("close");
 });
 
-process.on("SIGTERM", () => {
+process.once("SIGTERM", () => {
     app.emit("close");
 });

@@ -9,6 +9,7 @@ import { toLowerNonAccentVietnamese } from "../../utils/removeDiacritics.js";
 import NotFoundError from "../../errors/NotFoundError.js";
 import UnauthorizedError from "../../errors/UnauthorizeError.js";
 
+import type { IResUser } from "../../interfaces/api/response.js";
 import type { IUser, IUserProfile } from "../../interfaces/database/user.js";
 import type { IOffsetPagination, IReqAuth, IReqUser } from "../../interfaces/api/request.js";
 
@@ -66,6 +67,24 @@ export default class UserService {
         return user;
     }
 
+    public static async getByEmailOrPhone(
+        requestId: ObjectId,
+        emailOrPhone: string
+    ): Promise<IResUser.GetByEmailOrPhone | null> {
+        const user = await isEmail(emailOrPhone).then((val) =>
+            val ? this.getByEmail(emailOrPhone) : this.getByPhone(emailOrPhone)
+        );
+        return user && `${user._id}` !== `${requestId}`
+            ? {
+                  _id: user._id,
+                  name: user.name,
+                  email: user.email,
+                  avatarUrl: user.avatarUrl,
+                  phoneNumber: user.phoneNumber,
+              }
+            : null;
+    }
+
     public static async getByEmail(email: string): Promise<IUser | null> {
         return UserModel.findOne({ email, deletedAt: { $eq: null } }, { projection: { _name: 0 } });
     }
@@ -74,7 +93,7 @@ export default class UserService {
         return UserModel.findOne({ phoneNumber, deletedAt: { $eq: null } }, { projection: { _name: 0 } });
     }
 
-    // Mutate
+    // Mutation
     public static async insert(users: IReqUser.Insert[]): Promise<IUser[]> {
         const insertUser = users.map((user, i) => ({
             ...user,

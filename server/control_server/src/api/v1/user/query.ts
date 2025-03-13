@@ -8,7 +8,7 @@ import NotFoundError from "../../../errors/NotFoundError.js";
 import ForbiddenError from "../../../errors/ForbiddenError.js";
 
 import type { IReqUser } from "../../../interfaces/api/request.js";
-import type { IResGetAll, IResGetById } from "../../../interfaces/api/response.js";
+import type { IResUser } from "../../../interfaces/api/response.js";
 
 const querySchema = z
     .object({
@@ -31,7 +31,7 @@ const querySchema = z
         { message: "'limit' must be provided if 'page' is provided", path: ["limit"] }
     );
 
-export const getAll = ApiController.callbackFactory<{}, { query: IReqUser.GetAllQuery }, IResGetAll.User>(
+export const getAll = ApiController.callbackFactory<{}, { query: IReqUser.GetAllQuery }, IResUser.GetAll>(
     async (req, res, next) => {
         try {
             const { query } = req;
@@ -54,7 +54,7 @@ export const getAll = ApiController.callbackFactory<{}, { query: IReqUser.GetAll
     }
 );
 
-export const getById = ApiController.callbackFactory<{ id: string }, {}, IResGetById.User>(async (req, res, next) => {
+export const getById = ApiController.callbackFactory<{ id: string }, {}, IResUser.GetById>(async (req, res, next) => {
     try {
         const { id } = req.params;
         const requestUser = req.ctx.user;
@@ -70,6 +70,28 @@ export const getById = ApiController.callbackFactory<{ id: string }, {}, IResGet
             code: RESPONSE_CODE.SUCCESS,
             message: RESPONSE_MESSAGE.SUCCESS,
             data: rest,
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
+export const getByEmailOrPhone = ApiController.callbackFactory<
+    {},
+    { query: { emailOrPhone: string } },
+    IResUser.GetByEmailOrPhone
+>(async (req, res, next) => {
+    try {
+        const { emailOrPhone } = req.query;
+        const requestUser = req.ctx.user;
+
+        const user = await UserService.getByEmailOrPhone(requestUser._id, emailOrPhone);
+        if (!user) throw new NotFoundError("User not found");
+
+        return res.status(200).json({
+            code: RESPONSE_CODE.SUCCESS,
+            message: RESPONSE_MESSAGE.SUCCESS,
+            data: user,
         });
     } catch (err) {
         next(err);

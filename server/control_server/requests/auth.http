@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "emailOrPhone": "hoangduy12823@gmail.com",
-  "password": "623844"
+  "password": "123123"
 }
 
 ### REGISTER
@@ -35,8 +35,8 @@ Content-Type: application/json
 
 {
   "email": "hoangduy12823@gmail.com",
-  "password": "623844",
-  "otp": "623844"
+  "password": "123123",
+  "otp": "315763"
 }
 
 ### GOOGLE (NOTE: Use browser to open this link)

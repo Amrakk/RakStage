@@ -1,6 +1,7 @@
 import type { ObjectId } from "mongooat";
-import type { ISocialMediaAccount, IUser } from "../database/user.js";
+import type { IStage } from "../external/stage.js";
 import type BaseError from "../../errors/BaseError.js";
+import type { ISocialMediaAccount, IUser, IUserProfile } from "../database/user.js";
 import type { RESPONSE_CODE, RESPONSE_MESSAGE, USER_ROLE, USER_STATUS } from "../../constants.js";
 
 // CORE RESPONSE INTERFACE
@@ -20,15 +21,13 @@ export interface IResLogin {
     user: Omit<IUser, "password">;
 }
 
-export namespace IResGetAll {
-    export interface User {
+export namespace IResUser {
+    export interface GetAll {
         users: Omit<IUser, "password">[];
         totalDocuments: number;
     }
-}
 
-export namespace IResGetById {
-    export interface User {
+    export interface GetById {
         _id: ObjectId;
         name: string;
         email: string;
@@ -37,5 +36,14 @@ export namespace IResGetById {
         status: USER_STATUS;
         avatarUrl: string;
         socialMediaAccounts: ISocialMediaAccount[];
+    }
+
+    export interface GetByEmailOrPhone extends IUserProfile {}
+}
+
+export namespace IResInteractionServer {
+    export interface JoinStage {
+        stage: IStage;
+        token: string;
     }
 }

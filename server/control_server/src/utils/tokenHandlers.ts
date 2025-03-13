@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongooat";
 import redis from "../database/redis.js";
-import { ENV, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../constants.js";
+import { IS_PROD, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../constants.js";
 
 import type { Response } from "express";
 import type ITokenPayload from "../interfaces/api/token.js";
-
-const isProd = ENV === "production";
 
 export async function setAccToken(id: ObjectId, res: Response) {
     const token = await new Promise<string>((res, rej) =>
@@ -24,9 +22,9 @@ export async function setAccToken(id: ObjectId, res: Response) {
     );
 
     res.cookie("accToken", token, {
-        secure: isProd,
+        secure: IS_PROD,
         httpOnly: true,
-        sameSite: isProd ? "none" : "lax",
+        sameSite: IS_PROD ? "none" : "lax",
     });
 
     return token;
@@ -48,9 +46,9 @@ export async function setRefToken(id: ObjectId, res: Response) {
     );
 
     res.cookie("refToken", token, {
-        secure: isProd,
+        secure: IS_PROD,
         httpOnly: true,
-        sameSite: isProd ? "none" : "lax",
+        sameSite: IS_PROD ? "none" : "lax",
     });
 
     const cache = redis.getRedis();

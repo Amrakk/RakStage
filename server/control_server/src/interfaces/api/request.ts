@@ -73,3 +73,10 @@ export namespace IReqUser {
         socialMediaAccounts?: ISocialMediaAccount[];
     }
 }
+
+// Interaction Server
+export namespace IReqInteractionServer {
+    export interface CreateStage {
+        title: string;
+    }
+}

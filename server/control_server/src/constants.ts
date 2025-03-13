@@ -6,12 +6,16 @@
 
 // CORE
 export const APP_NAME = process.env.APP_NAME!;
+export const SERVER_NAME = process.env.SERVER_NAME ?? APP_NAME;
 export const ENV = process.env.ENV!;
 export const PORT = parseInt(process.env.PORT!);
 export const BASE_PATH = process.env.BASE_PATH!;
+export const HOST = process.env.HOST!;
 export const ORIGIN = process.env.ORIGIN!;
 export const CLIENT_URL = process.env.CLIENT_URL!;
 export const SESSION_SECRET = process.env.SESSION_SECRET!;
+
+export const IS_PROD = ENV === "production";
 
 // GMAIL
 export const EMAIL = process.env.EMAIL!;
@@ -96,4 +100,15 @@ export enum USER_STATUS {
 export enum SOCIAL_MEDIA_PROVIDER {
     GOOGLE = "google",
     DISCORD = "discord",
+}
+
+// Interaction Server
+export enum INTERACTION_EVENTS {
+    STAGE_CREATE = "stage_create",
+    STAGE_JOIN = "stage_join",
+}
+
+export enum STAGE_STATUS {
+    LIVE = 0,
+    ENDED = 1,
 }
