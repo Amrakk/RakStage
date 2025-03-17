@@ -46,4 +46,3 @@ export const UserModel = mongooat.Model("User", userSchema);
 
 await UserModel.dropIndexes();
 await UserModel.createIndex({ email: 1, deletedAt: 1 }, { unique: true });
-await UserModel.createIndex({ phoneNumber: 1, deletedAt: 1 }, { unique: true });

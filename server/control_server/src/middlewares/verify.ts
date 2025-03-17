@@ -26,7 +26,8 @@ export function verify(roles?: USER_ROLE[]) {
             )
                 throw new ForbiddenError();
 
-            req.ctx = { user };
+            const { password, ...rest } = user;
+            req.ctx = { user: rest };
 
             return next();
         } catch (err) {

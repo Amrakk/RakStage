@@ -20,7 +20,7 @@ import type { Request, Response, NextFunction } from "express";
 
 const callbackURL = (provider: SOCIAL_MEDIA_PROVIDER) => `${ORIGIN}/api/v1/auth/${provider}/callback`;
 const failureRedirect = (provider: SOCIAL_MEDIA_PROVIDER) =>
-    `${CLIENT_URL}${GOOGLE_FAILURE_REDIRECT_PATH}&failed=true&provider=${provider}`;
+    `${CLIENT_URL}${GOOGLE_FAILURE_REDIRECT_PATH}?failed=true&provider=${provider}`;
 
 const googleStrategy = new Strategy(
     {
