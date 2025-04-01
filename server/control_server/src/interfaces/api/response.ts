@@ -1,6 +1,7 @@
 import type { ObjectId } from "mongooat";
 import type { IStage } from "../external/stage.js";
 import type BaseError from "../../errors/BaseError.js";
+import type { IPasskey } from "../database/passkey.js";
 import type { ISocialMediaAccount, IUser, IUserProfile } from "../database/user.js";
 import type { RESPONSE_CODE, RESPONSE_MESSAGE, USER_ROLE, USER_STATUS } from "../../constants.js";
 
@@ -39,6 +40,10 @@ export namespace IResUser {
     }
 
     export interface GetByEmailOrPhone extends IUserProfile {}
+}
+
+export namespace IResPasskey {
+    export interface Base extends Omit<IPasskey, "publicKey" | "credentialId"> {}
 }
 
 export namespace IResInteractionServer {

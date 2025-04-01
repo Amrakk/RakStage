@@ -5,16 +5,19 @@ import type { IResponse } from "../interfaces/api/response.js";
 
 export default class ForbiddenError extends BaseError {
     statusCode = 403;
+    responseMessage;
 
-    constructor() {
+    constructor(responseMessage?: string) {
         super(RESPONSE_MESSAGE.FORBIDDEN);
+
+        this.responseMessage = responseMessage;
     }
 
     public getResponseBody(): IResponse {
         return {
             code: RESPONSE_CODE.FORBIDDEN,
             message: RESPONSE_MESSAGE.FORBIDDEN,
-            error: {},
+            error: { message: this.responseMessage },
         };
     }
 }

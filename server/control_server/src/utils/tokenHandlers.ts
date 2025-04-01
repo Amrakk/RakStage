@@ -51,8 +51,10 @@ export async function setRefToken(id: ObjectId, res: Response) {
         sameSite: IS_PROD ? "none" : "lax",
     });
 
+    const signature = token.split(".").pop();
+
     const cache = redis.getRedis();
-    await cache.set(`refToken-${id}`, token, "EX", 60 * 60 * 24 * 7);
+    await cache.set(`refToken-${id}-${signature}`, token, "EX", 60 * 60 * 24 * 7);
 
     return token;
 }

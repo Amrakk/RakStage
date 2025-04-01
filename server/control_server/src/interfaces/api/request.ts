@@ -1,5 +1,7 @@
+import type { ObjectId } from "mongooat";
 import type { ISocialMediaAccount } from "../database/user.js";
-import type { USER_ROLE, USER_STATUS } from "../../constants.js";
+import type { PASSKEY_TRANSPORT, USER_ROLE, USER_STATUS } from "../../constants.js";
+import type { AuthenticationResponseJSON } from "@simplewebauthn/server";
 
 export interface IOffsetPagination {
     page?: number;
@@ -33,6 +35,15 @@ export namespace IReqAuth {
         email: string;
         otp: string;
         password: string;
+    }
+
+    export interface CreatePassKey {
+        credential: PublicKeyCredentialJSON;
+    }
+
+    export interface LoginWithPasskey {
+        userId: string;
+        credential: AuthenticationResponseJSON;
     }
 }
 
@@ -78,5 +89,23 @@ export namespace IReqUser {
 export namespace IReqInteractionServer {
     export interface CreateStage {
         title: string;
+    }
+}
+
+// Passkey
+export namespace IReqPasskey {
+    export interface Insert {
+        userId: ObjectId;
+        counter: number;
+        credentialId: string;
+        publicKey: string;
+        transports: PASSKEY_TRANSPORT[];
+        name: string;
+    }
+
+    export interface Update {
+        name?: string;
+        counter?: number;
+        lastUsedAt?: Date;
     }
 }

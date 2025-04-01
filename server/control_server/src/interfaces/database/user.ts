@@ -20,6 +20,12 @@ export interface ISocialMediaAccount {
     accountId: string;
 }
 
+export interface IUserSimplify {
+    _id: ObjectId;
+    name: string;
+    avatarUrl: string;
+}
+
 export interface IUserProfile {
     _id: ObjectId;
     name: string;

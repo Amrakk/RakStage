@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { db } from "./database/db.js";
 import Redis from "./database/redis.js";
 import { HOST, IS_PROD, SERVER_NAME } from "./constants.js";
-import messageBroker from "./services/messageBroker.js";
+import messageBroker from "./services/messageBroker/index.js";
 
 export let serverId = `${SERVER_NAME}-${crypto.randomUUID()}`;
 
@@ -10,6 +10,10 @@ export async function init() {
     await Promise.all([db.init(), Redis.init()]);
 
     const cache = Redis.getRedis();
+
+    // TODO: remove this line
+    await cache.flushall();
+
     const servers = await cache.smembers(SERVER_NAME);
     const serverDetails = await Promise.all(
         servers.map(async (serverId) => ({ id: serverId, details: await cache.hgetall(serverId) }))

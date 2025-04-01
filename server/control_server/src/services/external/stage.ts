@@ -1,5 +1,6 @@
+import { randomUUID } from "crypto";
 import Redis from "../../database/redis.js";
-import messageBroker from "../messageBroker.js";
+import messageBroker from "../messageBroker/index.js";
 import { INTERACTION_EVENTS } from "../../constants.js";
 
 import ServiceResponseError from "../../errors/ServiceResponseError.js";
@@ -40,7 +41,7 @@ export default class InteractionService {
     public static async createStage(hostId: ObjectId, title: string): Promise<IResInteractionServer.JoinStage> {
         return new Promise<IResInteractionServer.JoinStage>(async (resolve, reject) => {
             try {
-                const actionId = crypto.randomUUID();
+                const actionId = randomUUID();
                 const message = { actionId, data: { title, hostId } };
                 const server = await this.getAvailableInteractionServer();
 

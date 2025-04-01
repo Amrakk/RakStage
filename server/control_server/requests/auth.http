@@ -22,7 +22,7 @@ Content-Type: application/json
 POST http://localhost:3000/api/v1/auth/logout
 
 ### FORGOT PASSWORD
-POST http://localhost:3000/api/v1/auth/forgot-password
+84478e97-4aba-4f58-961a-bcf7019bfa6dPOST http://localhost:3000/api/v1/auth/forgot-password
 Content-Type: application/json
 
 {
@@ -40,4 +40,37 @@ Content-Type: application/json
 }
 
 ### GOOGLE (NOTE: Use browser to open this link)
-# GET http://localhost:3000/api/v1/auth/google  
+# GET http://localhost:3000/api/v1/auth/google
+
+### VALIDATE QR CODE
+POST http://localhost:3000/api/v1/auth/fp
+Content-Type: application/json
+
+{
+  "fingerprint": "a7b329e6-fd51-40f8-9041-5a84b3915299"
+}
+
+### ACCEPT QR CODE
+POST http://localhost:3000/api/v1/auth/fp/accept
+Content-Type: application/json
+
+{
+  "fingerprint": "a7b329e6-fd51-40f8-9041-5a84b3915299"
+}
+
+
+### DECLINE QR CODE
+POST http://localhost:3000/api/v1/auth/fp/decline
+Content-Type: application/json
+
+{
+  "fingerprint": "0da2525f-6ff9-4de8-be4d-384660416949"
+}
+
+### LOGIN WITH TICKET
+POST http://localhost:3000/api/v1/auth/fp/ticket
+Content-Type: application/json
+
+{   
+  "ticket": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMz"
+}

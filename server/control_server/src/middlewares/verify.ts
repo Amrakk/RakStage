@@ -76,7 +76,8 @@ async function verifyCookies(req: Request, res: Response) {
 
 async function verifyRefPayload(payload: ITokenPayload, refToken: string) {
     const cache = redis.getRedis();
-    const token = await cache.get(`refToken-${payload.id}`);
+    const signature = refToken.split(".").pop();
+    const token = await cache.get(`refToken-${payload.id}-${signature}`);
     if (token !== refToken) return false;
 
     return true;

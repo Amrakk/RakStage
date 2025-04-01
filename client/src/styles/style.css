@@ -1,0 +1,122 @@
+.fade-in {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.35s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: #8888887c;
+    border-radius: 10px;
+    transition: all 1.5s linear;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #888888c0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s !important;
+    -webkit-text-fill-color: #ecf0f1 !important;
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes borderSpin {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-border-spin {
+    background-size: 200% 200%;
+    animation: borderSpin 2s linear infinite;
+}
+
+@keyframes scanVertical {
+    0% {
+        top: -75%;
+    }
+    49% {
+        top: 100%;
+        background: linear-gradient(to bottom, transparent, rgba(0, 140, 140, 0.4));
+    }
+    50% {
+        top: 100%;
+        background: linear-gradient(to top, transparent, rgba(0, 140, 140, 0.4));
+    }
+    100% {
+        top: -75%;
+        background: linear-gradient(to top, transparent, rgba(0, 140, 140, 0.4));
+    }
+}
+
+@keyframes pulseScale {
+    0%,
+    100% {
+        transform: scale(0.95);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+.animate-pulse-scale {
+    animation: pulseScale 1.5s ease-in-out infinite;
+}
+
+.animate-border-scan-vertical::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 140, 140, 0.4));
+    animation: scanVertical 6s linear infinite;
+}
+
+*:focus {
+    outline: 2px solid #008c8c;
+    outline-offset: 2px;
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="300" height="300" >
+<circle cx="150" cy="150" r="150" fill="#ECF0F1"></circle>
+<circle cx="150" cy="150" r="135" fill="#1C1C1C"></circle>
+
+
+<svg width="310" height="310" viewBox="10 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <line x1="140" y1="120" x2="140" y2="320" stroke="#ECF0F1" stroke-width="24" stroke-linecap="round"></line>
+    <path d="M140,120 Q230,70 260,140" stroke="#ECF0F1" stroke-width="24" fill="none" stroke-linecap="round"></path>
+    <path d="M260,140 Q180,240 260,290" stroke="#ECF0F1" stroke-width="24" fill="none" stroke-linecap="round"></path>
+    <path d="M110,310 Q200,360 290,310" stroke="#ECF0F1" stroke-width="24" fill="none" stroke-linecap="round"></path>
+
+    <circle cx="175" cy="145" r="10" fill="#ECF0F1"></circle>
+    <circle cx="225" cy="145" r="10" fill="#ECF0F1"></circle>
+
+    <path d="M130,120 Q90,90 110,70" stroke="#ECF0F1" stroke-width="24" fill="none" stroke-linecap="round"></path>
+    <path d="M270,130 Q310,110 290,90" stroke="#ECF0F1" stroke-width="24" fill="none" stroke-linecap="round"></path>
+</svg>
+    
+<style>@media (prefers-color-scheme: light) { :root { filter: contrast(1) brightness(0.1); } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style>
+</svg>

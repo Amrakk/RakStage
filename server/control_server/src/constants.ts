@@ -1,3 +1,5 @@
+import ms, { type StringValue } from "ms";
+
 /******************/
 /******************/
 /**  ENVIRONMENT **/
@@ -9,13 +11,21 @@ export const APP_NAME = process.env.APP_NAME!;
 export const SERVER_NAME = process.env.SERVER_NAME ?? APP_NAME;
 export const ENV = process.env.ENV!;
 export const PORT = parseInt(process.env.PORT!);
-export const BASE_PATH = process.env.BASE_PATH!;
+export const SERVER_VERSION = process.env.SERVER_VERSION!;
 export const HOST = process.env.HOST!;
 export const ORIGIN = process.env.ORIGIN!;
 export const CLIENT_URL = process.env.CLIENT_URL!;
 export const SESSION_SECRET = process.env.SESSION_SECRET!;
 
 export const IS_PROD = ENV === "production";
+
+// SOCKET
+export const WS_BROADCAST_CHANNEL = process.env.WS_BROADCAST_CHANNEL!;
+export const WS_MAX_RETRIES = parseInt(process.env.WS_MAX_RETRIES!);
+export const WS_MIN_TTL = ms(process.env.WS_MIN_TTL! as StringValue);
+export const WS_MAX_TTL = ms(process.env.WS_MAX_TTL! as StringValue);
+export const WS_TIMEOUT_INTERVAL = ms(process.env.WS_TIMEOUT_INTERVAL! as StringValue);
+export const WS_HEARTBEAT_INTERVAL = ms(process.env.WS_HEARTBEAT_INTERVAL! as StringValue);
 
 // GMAIL
 export const EMAIL = process.env.EMAIL!;
@@ -58,6 +68,7 @@ export const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET!;
 /**     ENUM     **/
 /******************/
 /******************/
+// API
 export enum RESPONSE_CODE {
     SUCCESS = 0,
     UNAUTHORIZED = 1,
@@ -66,6 +77,7 @@ export enum RESPONSE_CODE {
     BAD_REQUEST = 5,
     VALIDATION_ERROR = 8,
     TOO_MANY_REQUESTS = 9,
+    TIMEOUT = 10,
 
     SERVICE_UNAVAILABLE = 99,
     INTERNAL_SERVER_ERROR = 100,
@@ -80,8 +92,35 @@ export enum RESPONSE_MESSAGE {
     VALIDATION_ERROR = "Input validation failed! Please check your data",
     TOO_MANY_REQUESTS = "Too many requests! Please try again later",
 
+    TIMEOUT = "Request timeout! Please try again later",
     SERVICE_UNAVAILABLE = "Service is temporarily unavailable! Please try again later",
     INTERNAL_SERVER_ERROR = "An unexpected error occurred! Please try again later.",
+}
+
+// WEBSOCKET
+export enum WS_CLOSE_CODE {
+    TIMEOUT = 1,
+    EXPIRED = 2,
+    FINGERPRINT_CANCELED = 3,
+}
+
+export enum WS_CLOSE_REASON {
+    TIMEOUT = "Connection timeout",
+    EXPIRED = "Connection expired",
+    FINGERPRINT_CANCELED = "Fingerprint canceled",
+}
+
+export enum WS_SEND_OPERATION {
+    HELLO = "hello",
+    HEARTBEAT = "heartbeat",
+    PENDING_REMOTE_INIT = "pending_remote_init",
+    PENDING_TICKET = "pending_ticket",
+    PENDING_LOGIN = "pending_login",
+    CANCEL = "cancel",
+}
+
+export enum WS_RECEIVE_OPERATION {
+    HEARTBEAT_ACK = "heartbeat_ack",
 }
 
 // USER
@@ -102,7 +141,7 @@ export enum SOCIAL_MEDIA_PROVIDER {
     DISCORD = "discord",
 }
 
-// Interaction Server
+// MB - Interaction Server
 export enum INTERACTION_EVENTS {
     STAGE_CREATE = "stage_create",
     STAGE_JOIN = "stage_join",
@@ -111,4 +150,29 @@ export enum INTERACTION_EVENTS {
 export enum STAGE_STATUS {
     LIVE = 0,
     ENDED = 1,
+}
+
+// MB - FINGERPRINT
+export enum FINGERPRINT_EVENTS {
+    DETECTED = "fingerprint_detected",
+    DETECTED_ACK = "fingerprint_detected_ack",
+    REMOTE_ACTION = "fingerprint_remote_action",
+    REMOTE_ACTION_ACK = "fingerprint_remote_action_ack",
+}
+
+export enum FINGERPRINT_ACTIONS {
+    ACCEPT = 0,
+    DECLINE = 1,
+}
+
+// PASSKEY
+/** type AuthenticatorTransportFuture = 'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'*/
+export enum PASSKEY_TRANSPORT {
+    BLE = "ble",
+    CABLE = "cable",
+    HYBRID = "hybrid",
+    INTERNAL = "internal",
+    NFC = "nfc",
+    SMART_CARD = "smart-card",
+    USB = "usb",
 }
