@@ -4,8 +4,6 @@ import { serverId } from "../../core.js";
 import onMessage from "./channels/index.js";
 import { REDIS_URI, WS_BROADCAST_CHANNEL } from "../../constants.js";
 
-import TimeoutError from "../../errors/TimeoutError.js";
-
 import type { BaseEvent, PublishEvents, SubscriberEvents } from "../../interfaces/messageBroker/index.js";
 
 export class MessageBroker extends EventEmitter<SubscriberEvents> {
@@ -48,7 +46,7 @@ export class MessageBroker extends EventEmitter<SubscriberEvents> {
             this.subscriber.subscribe(WS_BROADCAST_CHANNEL, (err, count) => {}),
         ]);
 
-        this.subscriber.on("error", (err) => this.emit("error", err));
+        this.subscriber.on("error", (error) => this.emit("error", { error }));
 
         this.subscriber.on("message", onMessage.bind(this));
     }

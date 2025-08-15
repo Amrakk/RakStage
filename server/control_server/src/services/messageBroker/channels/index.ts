@@ -9,20 +9,20 @@ import ServiceResponseError from "../../../errors/ServiceResponseError.js";
 
 import type { BaseSubscriberEvent } from "../../../interfaces/messageBroker/index.js";
 
-export default function onMessage(this: MessageBroker, channel: string, message: string): void {
+export default async function onMessage(this: MessageBroker, channel: string, message: string): Promise<void> {
     try {
         const parsedMessage = JSON.parse(message) as BaseSubscriberEvent;
 
         switch (channel) {
             case serverId:
-                return handleServerMessage.call(this, parsedMessage);
+                return await handleServerMessage.call(this, parsedMessage);
             // case WS_BROADCAST_CHANNEL:
             //     return handleBroadcastMessage.call(this, parsedMessage);
             default:
                 throw new Error(`Unknown channel: ${channel}`);
         }
-    } catch (err) {
-        this.emit("error", err);
+    } catch (error) {
+        this.emit("error", { error });
     }
 }
 

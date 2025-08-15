@@ -47,12 +47,24 @@ export default class InteractionService {
 
                 const listener = messageBroker.createListener<INTERACTION_EVENTS.STAGE_JOIN>((response) => {
                     if (response.actionId !== actionId) return;
+
+                    messageBroker.off("error", errorListener);
                     messageBroker.off(INTERACTION_EVENTS.STAGE_CREATE, listener);
 
                     resolve(response.data);
                 });
 
+                const errorListener = messageBroker.createListener<"error">((err) => {
+                    if (err.actionId !== actionId) return;
+                    messageBroker.off("error", errorListener);
+                    messageBroker.off(INTERACTION_EVENTS.STAGE_CREATE, listener);
+
+                    reject(err.error);
+                });
+
+                messageBroker.on("error", errorListener);
                 messageBroker.on(INTERACTION_EVENTS.STAGE_CREATE, listener);
+
                 await messageBroker.publish(server.id, INTERACTION_EVENTS.STAGE_CREATE, message);
             } catch (error) {
                 reject(error);
@@ -71,12 +83,24 @@ export default class InteractionService {
 
                 const listener = messageBroker.createListener<INTERACTION_EVENTS.STAGE_JOIN>((response) => {
                     if (response.actionId !== actionId) return;
+
+                    messageBroker.on("error", errorListener);
                     messageBroker.off(INTERACTION_EVENTS.STAGE_JOIN, listener);
 
                     resolve(response.data);
                 });
 
+                const errorListener = messageBroker.createListener<"error">((err) => {
+                    if (err.actionId !== actionId) return;
+                    messageBroker.off("error", errorListener);
+                    messageBroker.off(INTERACTION_EVENTS.STAGE_CREATE, listener);
+
+                    reject(err.error);
+                });
+
+                messageBroker.on("error", errorListener);
                 messageBroker.on(INTERACTION_EVENTS.STAGE_JOIN, listener);
+
                 await messageBroker.publish(server.id, INTERACTION_EVENTS.STAGE_JOIN, message);
             } catch (error) {
                 reject(error);

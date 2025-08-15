@@ -1,6 +1,6 @@
 import StageService from "./internal/stage.js";
 import messageBroker from "./messageBroker.js";
-import { WebsocketManager } from "./websocketManager.js";
+import { SocketManager } from "../socket/socketManager.js";
 import { HOST, INTERACTION_EVENTS } from "../constants.js";
 import { messageBrokerErrorHandler } from "../middlewares/errorHandler.js";
 
@@ -20,7 +20,7 @@ export default class Publisher {
 
             const publishData = {
                 actionId,
-                data: { stage, token: await WebsocketManager.tokenGenerate(hostId) },
+                data: { stage, token: await SocketManager.tokenGenerate(hostId) },
             };
 
             await messageBroker.publish(reqServerId, INTERACTION_EVENTS.STAGE_CREATE, publishData);
@@ -46,7 +46,7 @@ export default class Publisher {
 
             const publishData = {
                 actionId,
-                data: { stage, token: await WebsocketManager.tokenGenerate(joinId) },
+                data: { stage, token: await SocketManager.tokenGenerate(joinId) },
             };
             await messageBroker.publish(reqServerId, INTERACTION_EVENTS.STAGE_JOIN, publishData);
         } catch (error) {

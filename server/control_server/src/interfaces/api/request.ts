@@ -88,7 +88,7 @@ export namespace IReqUser {
 // Interaction Server
 export namespace IReqInteractionServer {
     export interface CreateStage {
-        title: string;
+        title?: string;
     }
 }
 

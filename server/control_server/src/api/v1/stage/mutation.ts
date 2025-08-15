@@ -12,9 +12,9 @@ export const createStage = ApiController.callbackFactory<
 >(async (req, res, next) => {
     try {
         const { title } = req.body;
-        const { _id } = req.ctx.user;
+        const { _id, name } = req.ctx.user;
 
-        const stage = await InteractionService.createStage(_id, title);
+        const stage = await InteractionService.createStage(_id, title || `${name}'s Stage`);
 
         return res.status(201).json({ code: RESPONSE_CODE.SUCCESS, message: RESPONSE_MESSAGE.SUCCESS, data: stage });
     } catch (err) {

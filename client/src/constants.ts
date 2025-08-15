@@ -136,3 +136,9 @@ export const QR_Options: Partial<Options> = {
         type: "extra-rounded",
     },
 };
+
+// STAGE
+export enum STAGE_STATUS {
+    LIVE = 0,
+    ENDED = 1,
+}

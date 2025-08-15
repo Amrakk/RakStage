@@ -2,28 +2,56 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import BaseCard from "../shared/BaseCard";
 import { useNavigate } from "react-router-dom";
-import CustomTextField from "../shared/CustomTextField";
 import { FaPlus, FaSpinner } from "react-icons/fa";
+import CustomTextField from "../shared/CustomTextField";
+import { useStageActions } from "@/hooks/user/useStage";
 
 export default function HomeComponent() {
     const navigate = useNavigate();
+    const { createStageAction, joinStageAction } = useStageActions();
     const [stageCode, setStageCode] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleJoinStage = () => {
+    const handleJoinStage = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if (!stageCode.trim()) {
             toast.error("Please enter a valid stage code.");
             return;
         }
-        navigate(`/stage/${stageCode}`);
+
+        setLoading(true);
+        await joinStageAction.mutateAsync(stageCode, {
+            onSuccess: (data) => {
+                console.log(JSON.stringify(data, undefined, 2));
+                setLoading(false);
+                navigate(`/stage/${stageCode}`);
+            },
+            onError: (error: any) => {
+                setLoading(false);
+                toast.error(error.response?.data?.error[0].message || "Failed to join stage.");
+            },
+            onSettled: () => {
+                setLoading(false);
+            },
+        });
     };
 
     const handleCreateStage = () => {
         setLoading(true);
-        setTimeout(() => {
-            const newStageCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            navigate(`/stage/${newStageCode}`);
-        }, 500);
+        createStageAction.mutate(undefined, {
+            onSuccess: (data) => {
+                setLoading(false);
+                navigate(`/stage/${data.stage.code}`);
+            },
+            onError: (error: any) => {
+                setLoading(false);
+                toast.error(error.response?.data?.error[0].message || "Failed to create stage.");
+            },
+            onSettled: () => {
+                setLoading(false);
+            },
+        });
     };
 
     return (
@@ -35,7 +63,7 @@ export default function HomeComponent() {
                 </p>
 
                 <div className="space-y-5">
-                    <div className="grid grid-cols-5 gap-4">
+                    <form className="grid grid-cols-5 gap-4" onSubmit={handleJoinStage}>
                         <div className="col-span-3">
                             <CustomTextField
                                 id="stage-code"
@@ -48,17 +76,18 @@ export default function HomeComponent() {
                         </div>
 
                         <button
-                            onClick={handleJoinStage}
                             className={`col-span-2 bg-highlight-teal font-bold text-center text-white py-3 rounded-lg transition-all duration-200 ${
                                 stageCode ? "hover:bg-teal-600 active:scale-95" : "opacity-50 cursor-not-allowed"
                             }`}
                             disabled={!stageCode}
+                            type="submit"
                         >
                             Join Stage
                         </button>
-                    </div>
+                    </form>
 
                     <button
+                        type="button"
                         onClick={handleCreateStage}
                         className="relative w-full group flex items-center justify-center rounded-lg p-[2px] text-text transition-all duration-700 ease-in-out focus:outline-0"
                         disabled={loading}

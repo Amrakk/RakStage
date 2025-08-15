@@ -11,9 +11,6 @@ export async function init() {
 
     const cache = Redis.getRedis();
 
-    // TODO: remove this line
-    await cache.flushall();
-
     const servers = await cache.smembers(SERVER_NAME);
     const serverDetails = await Promise.all(
         servers.map(async (serverId) => ({ id: serverId, details: await cache.hgetall(serverId) }))

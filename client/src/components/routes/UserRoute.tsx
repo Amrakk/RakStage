@@ -27,6 +27,10 @@ export const userLazyPages: LazyPage[] = [
         path: "qr/:fingerprint",
         component: lazy(async () => sleep().then(() => import("@/pages/user/QRAction"))),
     },
+    {
+        path: "stage/:code",
+        component: lazy(async () => sleep().then(() => import("@/pages/user/Stage"))),
+    },
 ];
 
 export default function UserRoute() {

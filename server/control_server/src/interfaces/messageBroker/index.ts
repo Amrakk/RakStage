@@ -33,7 +33,7 @@ export type FingerprintDetectedSubscriberEvent = BaseEvent<PublishEvents[FINGERP
 export type FingerprintRemoteActionSubscriberEvent = BaseEvent<PublishEvents[FINGERPRINT_EVENTS.REMOTE_ACTION]>;
 
 export type SubscriberEvents = {
-    error: [error: any];
+    error: [error: { actionId?: string; error: any }];
     [INTERACTION_EVENTS.STAGE_CREATE]: [data: StageSubscriberEvent];
     [INTERACTION_EVENTS.STAGE_JOIN]: [data: StageSubscriberEvent];
 

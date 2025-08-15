@@ -1,5 +1,11 @@
-export class WebsocketManager {
+import type { Socket } from "socket.io";
+
+export class SocketManager {
     private static tokenMapper: Map<string, string> = new Map();
+
+    public static onWSSConnection(socket: Socket) {
+        console.log(socket.id);
+    }
 
     public static async tokenValidate(requestorId: string, token: string): Promise<boolean> {
         const storedToken = this.tokenMapper.get(requestorId);
@@ -12,8 +18,6 @@ export class WebsocketManager {
     public static async tokenGenerate(requestorId: string): Promise<string> {
         const token = crypto.randomUUID();
         this.tokenMapper.set(requestorId, token);
-
-        console.log(this.tokenMapper, undefined, 2);
 
         return token;
     }
